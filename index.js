@@ -4,8 +4,8 @@ const request = require('request-promise');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const apiKey = process.env.API_KEY || "20c17127d97bf430f0abbb19fe1c6708";
-const baseUrl = process.env.BASE_URL || "http://api.scraperapi.com?api_key=20c17127d97bf430f0abbb19fe1c6708&autoparse=true"
+
+// const baseUrl = process.env.BASE_URL || `http://api.scraperapi.com?api_key=${api_key}&autoparse=true`
 
 const generateScraperUrl = (apiKey) => `http://api.scraperapi.com?api_key=${apiKey}&autoparse=true`
 
@@ -42,7 +42,7 @@ app.get('/products/:productId/offers', async (req, res) => {
     const { productId } = req.params;
 
     try {
-        const response = await request(`${baseUrl}&url=https://www.amazon.com/gp/offer-listing/${productId}`)
+        const response = await request(`${generateScraperUrl(api_key)}&url=https://www.amazon.com/gp/offer-listing/${productId}`)
         res.json(JSON.parse(response));
     } catch (error) {
         res.json(error);
@@ -54,7 +54,7 @@ app.get('/search/:searchQuery', async (req, res) => {
     const { searchQuery } = req.params;
 
     try {
-        const response = await request(`${baseUrl}&url=https://www.amazon.com/s?k=${searchQuery}`)
+        const response = await request(`${generateScraperUrl(api_key)}&url=https://www.amazon.com/s?k=${searchQuery}`)
         res.json(JSON.parse(response));
     } catch (error) {
         res.json(error);
